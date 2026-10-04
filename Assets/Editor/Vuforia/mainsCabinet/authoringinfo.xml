@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARInfo>
+<TargetSet version="27.0" toolVersion="11.4.4">
+<ModelTarget name="mainsCabinet" targetId="2cfde67c4bd044d8824d16dfac35b101" version="14.0" toolVersion="11.4.4" bbox="-0.63442 -1.0516 -2.08354 0.2769 0.92996 -1.84044" upVector="0 1 0" previewImage="2cfde67c4bd044d8824d16dfac35b101_preview.jpg"/>
+
+</TargetSet>
+
+<Assembly name="mainsCabinets_assembly" assemblyId="5f6808c19a784876899075e637ff7959">
+<Part name="mainsCabinet" translation="0 0 0" rotation="AD: 0 0 1 0"/>
+<EntryPoint name="GuideView_0000" translation="-0.0275347 0.687597 0.121474" rotation="AD: 1 -0.00754132 0.038461 202.171" image="mainsCabinet_GuideView_0000.png" trained="no">
+
+</EntryPoint>
+
+</Assembly>
+
+</QCARInfo>
