@@ -282,8 +282,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1418090686}
   - {fileID: 2094054147}
+  - {fileID: 1418090686}
   - {fileID: 267651822}
   m_Father: {fileID: 1720360830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -630,8 +630,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1720360830}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &642066799
@@ -646,6 +645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab6d1e80c86e8246b205ae34bf8a768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChangeScene
+  fallbackScene: Main
 --- !u!1 &972140614
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,7 +938,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 277099577}
-  m_Father: {fileID: 642066798}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1368,4 +1368,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 972140616}
   - {fileID: 642066798}
+  - {fileID: 1720360830}
   - {fileID: 1970303239}
