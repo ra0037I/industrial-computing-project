@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Szenenwechsel mit Verlauf: MoveToScene merkt sich die aktuelle Szene,
 /// GoBack kehrt zur Szene zurück, von der man gekommen ist
-/// (z. B. BMK-Scanner -> Main oder BMK-Scanner -> SampleScene).
+/// (z. B. BMK-Scanner -> Main oder BMK-Scanner -> CabinetScanner).
 /// </summary>
 public class ChangeScene : MonoBehaviour
 {

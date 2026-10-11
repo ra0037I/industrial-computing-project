@@ -23,7 +23,7 @@ public class CabinetFoundPopup : MonoBehaviour
 
     [Header("Szenenwechsel")]
     [Tooltip("Name der Szene in der Build-Liste.")]
-    public string targetScene = "Bmkscanner";
+    public string targetScene = "BmkScanner";
 
     [Header("Verhalten")]
     [Tooltip("Popup bleibt so viele Sekunden stehen, nachdem der Schrank aus dem Bild ist (damit man noch tippen kann).")]

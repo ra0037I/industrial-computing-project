@@ -345,7 +345,7 @@ MonoBehaviour:
   title: Schaltschrank erkannt
   message: "<b>Hauptverteiler</b> (mainsCabinet)\nBetriebsmittel k\xF6nnen jetzt per Texterkennung (BMK) identifiziert werden."
   buttonText: Zur BMK-Erkennung
-  targetScene: Bmkscanner
+  targetScene: BmkScanner
   hideDelaySeconds: 3
   keepWhileExtendedTracked: 0
   panelColor: {r: 0.08, g: 0.09, b: 0.11, a: 0.88}
