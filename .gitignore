@@ -1,4 +1,5 @@
 # ===== Unity: automatisch erzeugte Ordner (nie einchecken) =====
+.utmp/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
