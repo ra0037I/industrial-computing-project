@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+<Tracking>
+<ModelTarget name="controlCabinet" motionHint="adaptive" trackingMode="car" optimizeTrackingFor="default"/>
+
+</Tracking>
+
+<Assembly name="controlCabinets_assembly" assemblyId="cb8e7ed1960747a6b511c426c2961b5d">
+<Part name="controlCabinet" translation="0 0 0" rotation="AD: 0 0 1 0"/>
+<EntryPoint name="GuideView_0000" translation="-0.774768 0.820761 1.50325" rotation="AD: 0.999997 -0.0096108 0.260619 184.087" trained="no">
+
+</EntryPoint>
+
+</Assembly>
+
+</QCARConfig>
