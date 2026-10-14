@@ -82,6 +82,19 @@ public static class CreateSessionRecorderScene
         }
         EditorSceneManager.CloseScene(bmk, true);
 
+        // Projekt nutzt nur das neue Input System: genau ein EventSystem mit InputSystemUIInputModule
+        // (der Vuforia-Menüeintrag legt ggf. eines mit StandaloneInputModule an → Buttons reagieren nicht)
+        var eventSystems = Object.FindObjectsByType<UnityEngine.EventSystems.EventSystem>(FindObjectsInactive.Include);
+        foreach (var es in eventSystems.Skip(1)) Object.DestroyImmediate(es.gameObject);
+        if (eventSystems.Length > 0)
+        {
+            var esGo = eventSystems[0].gameObject;
+            var legacy = esGo.GetComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+            if (legacy != null) Object.DestroyImmediate(legacy);
+            if (esGo.GetComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>() == null)
+                esGo.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>().AssignDefaultActions();
+        }
+
         // 4) Speichern, Build-Liste, Menü-Button
         EditorSceneManager.SaveScene(scene, RecorderScene);
         AddToBuildSettings(RecorderScene);
