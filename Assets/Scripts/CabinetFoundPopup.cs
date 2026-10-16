@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -6,19 +9,40 @@ using Vuforia;
 using Image = UnityEngine.UI.Image;
 
 /// <summary>
-/// Zeigt ein Popup am unteren Bildschirmrand, sobald das Model Target (Schaltschrank) erkannt wird.
+/// Zeigt ein Popup am unteren Bildschirmrand, sobald ein Model Target (Schaltschrank) erkannt wird.
+/// Reagiert auf alle Model Targets der Szene; Name und Text pro Schrank über "Cabinets".
 /// Der Button wechselt in die BMK-Scanner-Szene. Optik analog zum BmkInfoPanel.
 /// Auf das ModelTarget oder ein beliebiges GameObject in der Szene legen; die UI wird zur Laufzeit erzeugt.
 /// Ablage: Assets/Scripts/CabinetFoundPopup.cs
 /// </summary>
 public class CabinetFoundPopup : MonoBehaviour
 {
-    [Tooltip("Model Target, auf das reagiert wird. Leer = automatisch suchen.")]
+    [Serializable]
+    public class CabinetInfo
+    {
+        [Tooltip("Target Name aus dem Vuforia-Datensatz, z. B. mainsCabinet")]
+        public string targetName;
+        public string displayName;
+        [TextArea] public string message;
+    }
+
+    [Tooltip("Model Target, auf das reagiert wird. Leer = alle Model Targets der Szene.")]
     public ObserverBehaviour target;
 
     [Header("Inhalt")]
     public string title = "Schaltschrank erkannt";
-    [TextArea] public string message = "Hauptverteiler (mainsCabinet)\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden.";
+    [Tooltip("Text, falls für ein Target kein Eintrag unter Cabinets existiert. {0} = Target-Name.")]
+    [TextArea] public string message = "{0}\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden.";
+    public List<CabinetInfo> cabinets = new List<CabinetInfo>
+    {
+        new CabinetInfo { targetName = "mainsCabinet",   displayName = "Hauptverteiler",
+            message = "<b>Hauptverteiler</b> (mainsCabinet)\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden." },
+        new CabinetInfo { targetName = "controlCabinet", displayName = "Steuerschrank",
+            message = "<b>Steuerschrank</b> (controlCabinet)\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden." },
+    };
+
+    /// <summary>Zuletzt erkannter Schrank (Target-Name), z. B. für den BMK-Scanner.</summary>
+    public static string SelectedCabinet { get; private set; }
     public string buttonText = "Zur BMK-Erkennung";
 
     [Header("Szenenwechsel")]
@@ -36,7 +60,8 @@ public class CabinetFoundPopup : MonoBehaviour
     public Color accentColor = new Color(0.25f, 0.85f, 0.4f, 1f);     // grün = erkannt
     public Color buttonColor = new Color(1f, 0.82f, 0.2f, 1f);        // gelb wie die BMK-Sticker
 
-    ObserverBehaviour observer;
+    readonly List<ObserverBehaviour> observers = new List<ObserverBehaviour>();
+    ObserverBehaviour current;
     GameObject panel;
     Text titleText, bodyText, buttonLabel;
     bool visible;
@@ -45,31 +70,49 @@ public class CabinetFoundPopup : MonoBehaviour
 
     void Awake()
     {
-        // Entweder direkt auf dem ModelTarget, sonst das zugewiesene bzw. erste Model Target der Szene nehmen
-        observer = target != null ? target : GetComponent<ObserverBehaviour>();
-        if (observer == null) observer = FindFirstObjectByType<ModelTargetBehaviour>();
-        if (observer == null)
+        // Zugewiesenes Target, sonst eigenes, sonst alle Model Targets der Szene (auch deaktivierte)
+        if (target != null) observers.Add(target);
+        else if (GetComponent<ObserverBehaviour>() != null) observers.Add(GetComponent<ObserverBehaviour>());
+        else observers.AddRange(FindObjectsByType<ModelTargetBehaviour>(FindObjectsInactive.Include));
+
+        if (observers.Count == 0)
         {
             Debug.LogError("CabinetFoundPopup: Kein Model Target in der Szene gefunden.");
             enabled = false;
             return;
         }
-        observer.OnTargetStatusChanged += OnStatusChanged;
+        foreach (var o in observers) o.OnTargetStatusChanged += OnStatusChanged;
         BuildUi();
         EnsureEventSystem();
     }
 
     void OnDestroy()
     {
-        if (observer != null) observer.OnTargetStatusChanged -= OnStatusChanged;
+        foreach (var o in observers) if (o != null) o.OnTargetStatusChanged -= OnStatusChanged;
     }
 
     void OnStatusChanged(ObserverBehaviour b, TargetStatus status)
     {
         bool found = status.Status == Status.TRACKED ||
                      (keepWhileExtendedTracked && status.Status == Status.EXTENDED_TRACKED && visible);
-        if (found) { hideAt = -1f; SetVisible(true); }
-        else if (visible && hideAt < 0f) hideAt = Time.time + hideDelaySeconds;
+        if (found)
+        {
+            if (current != b) ShowCabinet(b);
+            hideAt = -1f;
+            SetVisible(true);
+        }
+        else if (b == current && visible && hideAt < 0f) hideAt = Time.time + hideDelaySeconds;
+    }
+
+    void ShowCabinet(ObserverBehaviour b)
+    {
+        current = b;
+        SelectedCabinet = b.TargetName;
+        var info = cabinets.FirstOrDefault(c => c.targetName == b.TargetName);
+        titleText.text = title;
+        bodyText.text = info != null && !string.IsNullOrEmpty(info.message)
+            ? info.message
+            : string.Format(message, info != null && !string.IsNullOrEmpty(info.displayName) ? info.displayName : b.TargetName);
     }
 
     void Update()
@@ -81,7 +124,7 @@ public class CabinetFoundPopup : MonoBehaviour
         bodyText.fontSize = Mathf.RoundToInt(Mathf.Clamp(w * 0.038f, 16, 48));
         buttonLabel.fontSize = Mathf.RoundToInt(Mathf.Clamp(w * 0.045f, 18, 56));
 
-        if (visible && hideAt > 0f && Time.time > hideAt) { hideAt = -1f; SetVisible(false); }
+        if (visible && hideAt > 0f && Time.time > hideAt) { hideAt = -1f; SetVisible(false); current = null; }
     }
 
     void SetVisible(bool v)
