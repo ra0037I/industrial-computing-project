@@ -604,8 +604,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcf42830fd79ae438fb69c68f21f63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneRecording
-  video: {fileID: 32900000, guid: e9469c9af0aff2a4d8ad97c042caa35a, type: 3}
-  videoPath: Assets/Videos/desk.mp4
+  video: {fileID: 32900000, guid: ed5975083590b8746a56e2176293f94a, type: 3}
+  videoPath: Assets/Videos/bmk.mp4
 --- !u!4 &459266847
 Transform:
   m_ObjectHideFlags: 0
