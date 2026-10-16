@@ -1,0 +1,139 @@
+{
+  "eintraege": [
+    {
+      "bmk": "65T1",
+      "bezeichnung": "Stromversorgung 24 V DC",
+      "typ": "SITOP PSU300S, Ausgang 24 V DC",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-65T1",
+      "einbauort": "Steuerschrank, Ebene 1 (oben) – 24-V-Versorgung",
+      "funktion": "Zentrale 24-V-DC-Versorgung für Steuerung, Peripherie und Netzwerk",
+      "status": "Wartung fällig",
+      "letztePruefung": "18.09.2026",
+      "hinweis": "Lüftungsschlitze reinigen, Ausgangsspannung messen",
+      "dokumentUrl": "https://example.com/doku/65T1.pdf"
+    },
+    {
+      "bmk": "65Q1",
+      "bezeichnung": "Selektivitätsmodul 24 V",
+      "typ": "SITOP PSE200U, 4 Kanäle",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-65Q1",
+      "einbauort": "Steuerschrank, Ebene 1 (oben) – 24-V-Versorgung",
+      "funktion": "Selektive Absicherung 24-V-Abgänge Steuerung (99K1)",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/65Q1.pdf"
+    },
+    {
+      "bmk": "65Q2",
+      "bezeichnung": "Selektivitätsmodul 24 V",
+      "typ": "SITOP PSE200U, 4 Kanäle",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-65Q2",
+      "einbauort": "Steuerschrank, Ebene 1 (oben) – 24-V-Versorgung",
+      "funktion": "Selektive Absicherung 24-V-Abgänge Sensorik",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/65Q2.pdf"
+    },
+    {
+      "bmk": "65Q3",
+      "bezeichnung": "Selektivitätsmodul 24 V",
+      "typ": "SITOP PSE200U, 4 Kanäle",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-65Q3",
+      "einbauort": "Steuerschrank, Ebene 1 (oben) – 24-V-Versorgung",
+      "funktion": "Selektive Absicherung 24-V-Abgänge Aktorik / Schütze",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/65Q3.pdf"
+    },
+    {
+      "bmk": "66Q1",
+      "bezeichnung": "Selektivitätsmodul 24 V",
+      "typ": "SITOP PSE200U, 4 Kanäle",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-66Q1",
+      "einbauort": "Steuerschrank, Ebene 1 (oben) – 24-V-Versorgung",
+      "funktion": "Selektive Absicherung 24-V-Abgänge Netzwerk (90K1)",
+      "status": "Ausgelöst – prüfen",
+      "letztePruefung": "18.09.2026",
+      "hinweis": "Kanal 2 hat ausgelöst – Last am Abgang prüfen",
+      "dokumentUrl": "https://example.com/doku/66Q1.pdf"
+    },
+    {
+      "bmk": "99K1",
+      "bezeichnung": "Dezentrale Peripherie",
+      "typ": "SIMATIC ET 200SP, Interfacemodul PROFINET mit DI/DQ-Modulen",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-99K1",
+      "einbauort": "Steuerschrank, Ebene 2 – Steuerung / Netzwerk",
+      "funktion": "Ein-/Ausgänge der Anlage, Anbindung an die SPS über PROFINET",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/99K1.pdf"
+    },
+    {
+      "bmk": "90K1",
+      "bezeichnung": "Industrial Ethernet Switch",
+      "typ": "SCALANCE X, 16 × RJ45",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-90K1",
+      "einbauort": "Steuerschrank, Ebene 2 – Steuerung / Netzwerk",
+      "funktion": "PROFINET-/Ethernet-Netzwerk im Schrank, Uplink zur Leitebene",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/90K1.pdf"
+    },
+    {
+      "bmk": "161Q1",
+      "bezeichnung": "Schütz",
+      "typ": "SIRIUS 3RT2, Baugröße S00, 24 V DC",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-161Q1",
+      "einbauort": "Steuerschrank, Ebene 3 – Schütze",
+      "funktion": "Ansteuerung Antrieb 1 (Ein)",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/161Q1.pdf"
+    },
+    {
+      "bmk": "161Q2",
+      "bezeichnung": "Schütz",
+      "typ": "SIRIUS 3RT2, Baugröße S00, 24 V DC",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-161Q2",
+      "einbauort": "Steuerschrank, Ebene 3 – Schütze",
+      "funktion": "Ansteuerung Antrieb 1 (Richtungsumkehr)",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/161Q2.pdf"
+    },
+    {
+      "bmk": "163Q3",
+      "bezeichnung": "Schütz",
+      "typ": "SIRIUS 3RT2, Baugröße S00, 24 V DC",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-163Q3",
+      "einbauort": "Steuerschrank, Ebene 3 – Schütze",
+      "funktion": "Ansteuerung Antrieb 3 (Ein)",
+      "status": "In Betrieb – OK",
+      "letztePruefung": "18.09.2026",
+      "dokumentUrl": "https://example.com/doku/163Q3.pdf"
+    },
+    {
+      "bmk": "163Q4",
+      "bezeichnung": "Schütz",
+      "typ": "SIRIUS 3RT2, Baugröße S00, 24 V DC",
+      "hersteller": "Siemens",
+      "artikelnummer": "MOCK-163Q4",
+      "einbauort": "Steuerschrank, Ebene 3 – Schütze",
+      "funktion": "Ansteuerung Antrieb 3 (Richtungsumkehr)",
+      "status": "Störung",
+      "letztePruefung": "18.09.2026",
+      "hinweis": "Schütz zieht nicht an – Spule und Ansteuerung prüfen",
+      "dokumentUrl": "https://example.com/doku/163Q4.pdf"
+    }
+  ]
+}

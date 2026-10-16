@@ -144,6 +144,12 @@ public class CabinetFoundPopup : MonoBehaviour
         }
         loading = true;
         buttonLabel.text = "Lade …";
+        // Erkannten Schrank an den BMK-Scanner weitergeben (lädt dort dessen BMK-Liste und Daten)
+        if (current != null)
+        {
+            var info = cabinets.FirstOrDefault(c => c.targetName == current.TargetName);
+            BmkContext.SetCabinet(current.TargetName, info?.displayName);
+        }
         ChangeScene.Load(targetScene);
     }
 

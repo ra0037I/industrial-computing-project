@@ -49,14 +49,18 @@ public class MockBmkInfoSource : IBmkInfoSource
 {
     readonly Dictionary<string, BmkInfo> byBmk = new Dictionary<string, BmkInfo>();
 
-    public MockBmkInfoSource(TextAsset json)
+    public MockBmkInfoSource(params TextAsset[] jsons)
     {
-        if (json == null) { Debug.LogWarning("BmkInfo: Keine Mock-JSON zugewiesen."); return; }
-        var list = JsonUtility.FromJson<BmkInfoList>(json.text);
-        if (list?.eintraege == null) { Debug.LogError("BmkInfo: Mock-JSON konnte nicht gelesen werden."); return; }
-        foreach (var e in list.eintraege)
-            if (!string.IsNullOrEmpty(e.bmk)) byBmk[e.bmk.ToUpperInvariant()] = e;
-        Debug.Log("BmkInfo: " + byBmk.Count + " Mock-Einträge geladen.");
+        if (jsons == null || jsons.Length == 0) { Debug.LogWarning("BmkInfo: Keine Mock-JSON gefunden."); return; }
+        foreach (var json in jsons)
+        {
+            if (json == null) continue;
+            var list = JsonUtility.FromJson<BmkInfoList>(json.text);
+            if (list?.eintraege == null) { Debug.LogError("BmkInfo: Mock-JSON konnte nicht gelesen werden: " + json.name); continue; }
+            foreach (var e in list.eintraege)
+                if (!string.IsNullOrEmpty(e.bmk)) byBmk[e.bmk.ToUpperInvariant()] = e;
+        }
+        Debug.Log($"BmkInfo: {byBmk.Count} Mock-Einträge geladen ({BmkContext.Cabinet ?? "alle Schränke"}).");
     }
 
     public void Lookup(string bmk, Action<BmkInfo> done)
@@ -85,7 +89,10 @@ public class RestBmkInfoSource : IBmkInfoSource
 
     IEnumerator Get(string bmk, Action<BmkInfo> done)
     {
-        using (var req = UnityWebRequest.Get(baseUrl + "/" + UnityWebRequest.EscapeURL(bmk)))
+        // Optional wird der erkannte Schrank mitgeschickt: GET {baseUrl}/{bmk}?schrank={TargetName}
+        string url = baseUrl + "/" + UnityWebRequest.EscapeURL(bmk);
+        if (!string.IsNullOrEmpty(BmkContext.Cabinet)) url += "?schrank=" + UnityWebRequest.EscapeURL(BmkContext.Cabinet);
+        using (var req = UnityWebRequest.Get(url))
         {
             req.timeout = 5;
             yield return req.SendWebRequest();
@@ -118,7 +125,8 @@ public class BmkInfoPanel : MonoBehaviour
 
     [Header("Datenquelle")]
     public SourceMode source = SourceMode.Mock;
-    [Tooltip("JSON-Datei mit den Mock-Daten (bmk_mock.json).")]
+    [Tooltip("Fallback, falls unter Resources/BmkData keine bmk_mock.json liegt. Normalerweise werden die " +
+             "Daten des erkannten Schranks automatisch geladen (siehe BmkContext).")]
     public TextAsset mockJson;
     [Tooltip("Basis-URL des Webservice, z. B. https://server/api/bmk")]
     public string restBaseUrl = "https://example.com/api/bmk";
@@ -128,6 +136,7 @@ public class BmkInfoPanel : MonoBehaviour
     public float hideAfterSeconds = 0f;
     public Color panelColor = new Color(0.08f, 0.09f, 0.11f, 0.88f);
     public Color accentColor = new Color(1f, 0.82f, 0.2f, 1f); // gelb wie die Sticker
+    public Color wrongCabinetColor = new Color(1f, 0.6f, 0.15f, 1f); // orange = BMK aus anderem Schrank
 
     IBmkInfoSource dataSource;
     GameObject panel;
@@ -141,13 +150,19 @@ public class BmkInfoPanel : MonoBehaviour
     {
         dataSource = source == SourceMode.Rest
             ? new RestBmkInfoSource(this, restBaseUrl)
-            : new MockBmkInfoSource(mockJson);
+            : new MockBmkInfoSource(MockFiles());
 
         BuildUi();
 
         var scanner = FindFirstObjectByType<BmkScanner>();
         if (scanner != null) scanner.onBmkRecognized.AddListener(Show);
         else Debug.LogWarning("BmkInfoPanel: Kein BmkScanner in der Szene gefunden.");
+    }
+
+    TextAsset[] MockFiles()
+    {
+        var files = BmkContext.Load("bmk_mock");
+        return files.Length > 0 ? files : new[] { mockJson };
     }
 
     void Update()
@@ -168,6 +183,23 @@ public class BmkInfoPanel : MonoBehaviour
         hideAt = Time.time + hideAfterSeconds;
         if (bmk == shownBmk && panel.activeSelf) return; // gleiches BMK schon sichtbar
         shownBmk = bmk;
+
+        // BMK gehört nicht zum erkannten Schrank? -> Hinweis statt Daten
+        if (BmkContext.CurrentCabinetHasList)
+        {
+            string home = BmkContext.CabinetOf(bmk);
+            if (home != BmkContext.Cabinet)
+            {
+                titleText.text = bmk + "  ·  nicht in diesem Schrank";
+                bodyText.text = home != null
+                    ? $"Dieses Betriebsmittel gehört nicht zum <b>{BmkContext.CabinetDisplayName}</b>,\n" +
+                      $"sondern zum <b>{BmkContext.DisplayName(home)}</b>."
+                    : $"Dieses Betriebsmittel ist im <b>{BmkContext.CabinetDisplayName}</b> nicht verzeichnet.";
+                accentBar.color = wrongCabinetColor;
+                panel.SetActive(true);
+                return;
+            }
+        }
 
         titleText.text = bmk;
         bodyText.text = "Lade Daten …";

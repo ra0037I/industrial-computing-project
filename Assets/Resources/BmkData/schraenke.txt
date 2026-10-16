@@ -1,0 +1,3 @@
+# Schränke mit BMK-Daten: TargetName (= Ordnername = Vuforia Model Target);Anzeigename
+mainsCabinet;Hauptverteiler
+controlCabinet;Steuerschrank

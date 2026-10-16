@@ -107,8 +107,8 @@ Für Tests sind folgende Status eingebaut:
 | `BmkOcr.java` | `Assets/Plugins/Android/` | Android-Plugin: Texterkennung mit Google ML Kit, Rückgabe an Unity per `UnitySendMessage` |
 | `MlKitGradleDependency.cs` | `Assets/Editor/` | Trägt beim Android-Build `com.google.mlkit:text-recognition:16.0.1` in die `build.gradle` von `unityLibrary` ein |
 | `BmkInfoPanel.cs` | `Assets/Scripts/` | Datenmodell `BmkInfo`, Datenquellen (Mock/REST), Info-Panel-UI; verbindet sich automatisch mit dem Scanner |
-| `bmk_mock.json` | `Assets/Data/` | Mock-Datenbank mit 63 Einträgen (Bezeichnung, Typ, Hersteller, Einbauort, Funktion, Status, Prüfdatum …) |
-| `bmk_liste.txt` | `Assets/Data/` | Liste aller gültigen BMKs, eins pro Zeile; verbessert die OCR-Trefferquote |
+| `bmk_mock.json` | `Assets/Resources/BmkData/{Schrank}/` | Mock-Datenbank pro Schrank (Hauptverteiler 63, Steuerschrank 11 Einträge) (Bezeichnung, Typ, Hersteller, Einbauort, Funktion, Status, Prüfdatum …) |
+| `bmk_liste.txt` | `Assets/Resources/BmkData/{Schrank}/` | Liste der gültigen BMKs des Schranks, eins pro Zeile; verbessert die OCR-Trefferquote |
 | `PlayFromMainScene.cs` | `Assets/Editor/` | Play im Editor startet immer die erste Szene der Build-Liste (Main); umschaltbar über `Tools → Immer mit Main-Szene starten` |
 | `.gitignore` | Projektwurzel | Schließt generierte Unity-Ordner und IDE-Dateien aus |
 | `.gitattributes` | Projektwurzel | Zeilenenden für Textdateien, Git LFS für große Binärdateien |

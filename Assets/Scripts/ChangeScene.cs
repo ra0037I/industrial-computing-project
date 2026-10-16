@@ -15,7 +15,12 @@ public class ChangeScene : MonoBehaviour
     static readonly Stack<string> history = new Stack<string>();
 
     /// <summary>Wechselt in die angegebene Szene und merkt sich die aktuelle.</summary>
-    public void MoveToScene(string sceneName) => Load(sceneName);
+    public void MoveToScene(string sceneName)
+    {
+        // Wechsel über Menü-Buttons: kein bestimmter Schrank gewählt -> BMK-Scanner nutzt alle Schränke
+        BmkContext.Clear();
+        Load(sceneName);
+    }
 
     /// <summary>Zurück zur vorherigen Szene (ohne Parameter, für Back-Buttons).</summary>
     public void GoBack()

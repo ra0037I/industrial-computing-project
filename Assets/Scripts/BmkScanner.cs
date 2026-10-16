@@ -38,7 +38,8 @@ public class BmkScanner : MonoBehaviour
     public int requiredMatches = 2;
     [Tooltip("Regex für gültige BMKs. Standard: Zahl + Buchstaben + Zahl, z. B. 37T1.")]
     public string bmkPattern = @"^\d+[A-Z]+\d+$";
-    [Tooltip("Optional: Textdatei mit allen gültigen BMKs, eins pro Zeile. Erhöht die Trefferquote stark.")]
+    [Tooltip("Fallback, falls unter Resources/BmkData keine bmk_liste.txt liegt. Normalerweise wird die Liste " +
+             "des erkannten Schranks automatisch geladen (siehe BmkContext).")]
     public TextAsset validBmkList;
     [Tooltip("Pause nach einem Treffer, bevor wieder gescannt wird (Sekunden).")]
     public float cooldownAfterHit = 2f;
@@ -92,6 +93,8 @@ public class BmkScanner : MonoBehaviour
     void Start()
     {
         regex = new Regex(bmkPattern);
+        if (!string.IsNullOrEmpty(BmkContext.CabinetDisplayName))
+            hintText = BmkContext.CabinetDisplayName + ": " + hintText;
         BuildValidSet();
         BuildOverlay();
 
@@ -341,14 +344,20 @@ public class BmkScanner : MonoBehaviour
 
     void BuildValidSet()
     {
-        if (validBmkList == null) return;
+        // BMK-Listen ALLER Schränke: So werden auch BMKs aus einem anderen Schrank sicher erkannt,
+        // und das Info-Panel kann melden, dass sie nicht zum gewählten Schrank gehören.
+        var lists = BmkContext.LoadAll("bmk_liste");
+        if (lists.Length == 0 && validBmkList != null) lists = new[] { validBmkList };
+        if (lists.Length == 0) return;
+
         validSet = new HashSet<string>();
-        foreach (var line in validBmkList.text.Split('\n'))
-        {
-            string c = Clean(line.ToUpperInvariant());
-            if (c.Length > 0) validSet.Add(c);
-        }
-        Debug.Log("BmkScanner: " + validSet.Count + " gültige BMKs geladen.");
+        foreach (var list in lists)
+            foreach (var line in list.text.Split('\n'))
+            {
+                string c = Clean(line.ToUpperInvariant());
+                if (c.Length > 0) validSet.Add(c);
+            }
+        Debug.Log($"BmkScanner: {validSet.Count} gültige BMKs aus {lists.Length} Liste(n) geladen.");
     }
 
     // ------------------------------------------------------------------ Overlay (UI)
