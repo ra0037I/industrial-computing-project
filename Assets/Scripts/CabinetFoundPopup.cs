@@ -10,36 +10,24 @@ using Image = UnityEngine.UI.Image;
 
 /// <summary>
 /// Zeigt ein Popup am unteren Bildschirmrand, sobald ein Model Target (Schaltschrank) erkannt wird.
-/// Reagiert auf alle Model Targets der Szene; Name und Text pro Schrank über "Cabinets".
+/// Reagiert auf alle Model Targets der Szene. Der Text wird aus einer Vorlage zusammengebaut
+/// (Anzeigename aus Resources/BmkData/schraenke.txt, Anzahl BMKs aus bmk_liste.txt).
 /// Der Button wechselt in die BMK-Scanner-Szene. Optik analog zum BmkInfoPanel.
 /// Auf das ModelTarget oder ein beliebiges GameObject in der Szene legen; die UI wird zur Laufzeit erzeugt.
 /// Ablage: Assets/Scripts/CabinetFoundPopup.cs
 /// </summary>
 public class CabinetFoundPopup : MonoBehaviour
 {
-    [Serializable]
-    public class CabinetInfo
-    {
-        [Tooltip("Target Name aus dem Vuforia-Datensatz, z. B. mainsCabinet")]
-        public string targetName;
-        public string displayName;
-        [TextArea] public string message;
-    }
-
     [Tooltip("Model Target, auf das reagiert wird. Leer = alle Model Targets der Szene.")]
     public ObserverBehaviour target;
 
     [Header("Inhalt")]
     public string title = "Schaltschrank erkannt";
-    [Tooltip("Text, falls für ein Target kein Eintrag unter Cabinets existiert. {0} = Target-Name.")]
-    [TextArea] public string message = "{0}\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden.";
-    public List<CabinetInfo> cabinets = new List<CabinetInfo>
-    {
-        new CabinetInfo { targetName = "mainsCabinet",   displayName = "Hauptverteiler",
-            message = "<b>Hauptverteiler</b> (mainsCabinet)\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden." },
-        new CabinetInfo { targetName = "controlCabinet", displayName = "Steuerschrank",
-            message = "<b>Steuerschrank</b> (controlCabinet)\nBetriebsmittel können jetzt per Texterkennung (BMK) identifiziert werden." },
-    };
+    [Tooltip("Text im Popup. Platzhalter: {name} = Anzeigename aus Resources/BmkData/schraenke.txt, " +
+             "{target} = Name des Model Targets, {count} = Anzahl hinterlegter BMKs.")]
+    [TextArea(2, 5)] public string message = DefaultMessage;
+    const string DefaultMessage =
+        "<b>{name}</b>\n{count} Betriebsmittel hinterlegt – sie können jetzt per Texterkennung (BMK) identifiziert werden.";
 
     /// <summary>Zuletzt erkannter Schrank (Target-Name), z. B. für den BMK-Scanner.</summary>
     public static string SelectedCabinet { get; private set; }
@@ -108,11 +96,22 @@ public class CabinetFoundPopup : MonoBehaviour
     {
         current = b;
         SelectedCabinet = b.TargetName;
-        var info = cabinets.FirstOrDefault(c => c.targetName == b.TargetName);
         titleText.text = title;
-        bodyText.text = info != null && !string.IsNullOrEmpty(info.message)
-            ? info.message
-            : string.Format(message, info != null && !string.IsNullOrEmpty(info.displayName) ? info.displayName : b.TargetName);
+        bodyText.text = BuildMessage(b.TargetName);
+    }
+
+    /// <summary>Popup-Text aus der Vorlage zusammenbauen – kein Eintrag pro Schrank nötig.</summary>
+    string BuildMessage(string target)
+    {
+        string template = string.IsNullOrWhiteSpace(message) ? DefaultMessage : message;
+        int count = BmkContext.BmkCount(target);
+        string text = template
+            .Replace("{name}", BmkContext.DisplayName(target))
+            .Replace("{target}", target)
+            .Replace("{count}", count.ToString());
+        // Ohne BMK-Liste die Zeile mit der Anzahl nicht als "0 Betriebsmittel" anzeigen
+        if (count == 0) text = text.Replace("0 Betriebsmittel hinterlegt – sie", "Betriebsmittel");
+        return text;
     }
 
     void Update()
@@ -147,8 +146,7 @@ public class CabinetFoundPopup : MonoBehaviour
         // Erkannten Schrank an den BMK-Scanner weitergeben (lädt dort dessen BMK-Liste und Daten)
         if (current != null)
         {
-            var info = cabinets.FirstOrDefault(c => c.targetName == current.TargetName);
-            BmkContext.SetCabinet(current.TargetName, info?.displayName);
+            BmkContext.SetCabinet(current.TargetName);
         }
         ChangeScene.Load(targetScene);
     }
@@ -198,7 +196,7 @@ public class CabinetFoundPopup : MonoBehaviour
         titleText = MakeText("Title", font, FontStyle.Bold, panel.transform);
         titleText.text = title;
         bodyText = MakeText("Body", font, FontStyle.Normal, panel.transform);
-        bodyText.text = message;
+        bodyText.text = "";
         bodyText.lineSpacing = 1.15f;
         bodyText.color = new Color(0.9f, 0.92f, 0.95f);
 

@@ -104,6 +104,14 @@ public static class BmkContext
         return bmkToCabinet.TryGetValue(Normalize(bmk), out var result) ? result : null;
     }
 
+    /// <summary>Anzahl der BMKs in der bmk_liste.txt eines Schranks (0 = keine Liste).</summary>
+    public static int BmkCount(string targetName)
+    {
+        if (targetName == null) return 0;
+        CabinetOf(""); // Zuordnungstabelle aufbauen
+        return bmkToCabinet.Values.Count(c => c == targetName);
+    }
+
     /// <summary>Hat der aktuelle Schrank eine BMK-Liste? (nur dann ist die Zuordnungsprüfung sinnvoll)</summary>
     public static bool CurrentCabinetHasList => Cabinet != null && LoadFor(Cabinet, "bmk_liste") != null;
 

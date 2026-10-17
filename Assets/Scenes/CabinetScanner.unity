@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 093adaa38c25cae47b131b1e7baba0f5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7267583086349385398, guid: 093adaa38c25cae47b131b1e7baba0f5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -351,14 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CabinetFoundPopup
   target: {fileID: 0}
   title: Schaltschrank erkannt
-  message: 
-  cabinets:
-  - targetName: mainsCabinet
-    displayName: Hauptverteiler
-    message: "<b>Hauptverteiler</b> (mainsCabinet)\nBetriebsmittel k\xF6nnen jetzt per Texterkennung (BMK) identifiziert werden."
-  - targetName: controlCabinet
-    displayName: Steuerschrank
-    message: "<b>Steuerschrank</b> (controlCabinet)\nBetriebsmittel k\xF6nnen jetzt per Texterkennung (BMK) identifiziert werden."
+  message: "<b>{name}</b>\n{count} Betriebsmittel hinterlegt \u2013 sie k\xF6nnen jetzt per Texterkennung (BMK) identifiziert werden."
   buttonText: Zur BMK-Erkennung
   targetScene: BmkScanner
   hideDelaySeconds: 3
@@ -769,7 +762,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: "Zur\xFCck"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -900,6 +893,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d0f4b7fe4bff7bb42a6009ec6ac97581, type: 3}
       propertyPath: m_Name
       value: controlCabinet
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d0f4b7fe4bff7bb42a6009ec6ac97581, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7267583086349385398, guid: d0f4b7fe4bff7bb42a6009ec6ac97581, type: 3}
       propertyPath: m_LocalScale.y

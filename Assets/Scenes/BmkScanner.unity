@@ -255,7 +255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: "Zur\xFCck"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -380,7 +380,7 @@ MonoBehaviour:
   onBmkRecognized:
     m_PersistentCalls:
       m_Calls: []
-  editorSimulatedText: 
+  editorSimulatedText: 35T1
 --- !u!4 &114505320
 Transform:
   m_ObjectHideFlags: 0
