@@ -380,7 +380,7 @@ MonoBehaviour:
   onBmkRecognized:
     m_PersistentCalls:
       m_Calls: []
-  editorSimulatedText: 163Q4
+  editorSimulatedText: 
 --- !u!4 &114505320
 Transform:
   m_ObjectHideFlags: 0
@@ -604,8 +604,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efcf42830fd79ae438fb69c68f21f63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneRecording
-  video: {fileID: 32900000, guid: ed5975083590b8746a56e2176293f94a, type: 3}
-  videoPath: Assets/Videos/bmk.mp4
+  video: {fileID: 32900000, guid: 5c4d6f304147ade47b519ac62f47ca44, type: 3}
+  videoPath: Assets/Videos/bmkScanner.mp4
 --- !u!4 &459266847
 Transform:
   m_ObjectHideFlags: 0
@@ -962,6 +962,7 @@ MonoBehaviour:
   hideAfterSeconds: 0
   panelColor: {r: 0.08, g: 0.09, b: 0.11, a: 0.88}
   accentColor: {r: 1, g: 0.82, b: 0.2, a: 1}
+  wrongCabinetColor: {r: 1, g: 0.6, b: 0.15, a: 1}
 --- !u!4 &1470628875
 Transform:
   m_ObjectHideFlags: 0
