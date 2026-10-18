@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneRecording
   video: {fileID: 32900000, guid: f94162ca2ebbff5458787674a695f3cf, type: 3}
-  videoPath: Assets/Videos/wall.mp4
+  videoPath: 
 --- !u!4 &459266847
 Transform:
   m_ObjectHideFlags: 0
@@ -651,6 +651,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4136516463126686016, guid: 8ce5dfe4cb6b24642b68cb2125a3004e, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5912904106065717486, guid: 8ce5dfe4cb6b24642b68cb2125a3004e, type: 3}
+      propertyPath: m_CullTransparentMesh
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6280759649957847181, guid: 8ce5dfe4cb6b24642b68cb2125a3004e, type: 3}
