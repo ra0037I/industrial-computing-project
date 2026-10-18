@@ -239,7 +239,7 @@ MonoBehaviour:
   validBmkList: {fileID: 0}
   cooldownAfterHit: 2
   rotation: 0
-  showDebugPreview: 1
+  showDebugPreview: 0
   onBmkRecognized:
     m_PersistentCalls:
       m_Calls: []

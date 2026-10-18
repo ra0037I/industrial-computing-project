@@ -29,8 +29,6 @@ public class CabinetFoundPopup : MonoBehaviour
     const string DefaultMessage =
         "<b>{name}</b>\n{count} Betriebsmittel hinterlegt – sie können jetzt per Texterkennung (BMK) identifiziert werden.";
 
-    /// <summary>Zuletzt erkannter Schrank (Target-Name), z. B. für den BMK-Scanner.</summary>
-    public static string SelectedCabinet { get; private set; }
     public string buttonText = "Zur BMK-Erkennung";
 
     [Header("Szenenwechsel")]
@@ -95,7 +93,6 @@ public class CabinetFoundPopup : MonoBehaviour
     void ShowCabinet(ObserverBehaviour b)
     {
         current = b;
-        SelectedCabinet = b.TargetName;
         titleText.text = title;
         bodyText.text = BuildMessage(b.TargetName);
     }
