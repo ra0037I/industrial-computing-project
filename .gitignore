@@ -115,3 +115,7 @@ InitTestScene*.unity*
 
 # Visual-Studio-Upgradeprotokoll
 UpgradeLog*.htm
+
+# Vom Test-Framework beim Build erzeugt
+/[Aa]ssets/[Rr]esources/PerformanceTestRun*.json
+/[Aa]ssets/[Rr]esources/PerformanceTestRun*.json.meta
