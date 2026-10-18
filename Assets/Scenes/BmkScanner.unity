@@ -923,7 +923,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 273682743}
         m_TargetAssemblyTypeName: ChangeScene, Assembly-CSharp
         m_MethodName: GoBack
         m_Mode: 1
