@@ -1,11 +1,11 @@
 # Wartungsassistent – AR-App zur Schaltschrank- und BMK-Erkennung
 
-Projektarbeit im Kurs **Industrial Computing** (MCI, Master).
+Projektarbeit im Kurs **Industrial Computing** (MCI, Master) von **Andreas Rofner** und **Rene Stockinger**.
 
 Die Android-App unterstützt Wartungspersonal am Schaltschrank:
 
 1. **Schaltschrank erkennen** – Vuforia erkennt den realen Schrank anhand eines 3D-Scans (Model Target).
-2. **Betriebsmittelkennzeichnung (BMK) lesen** – ein BMK-Schild (z. B. `37T1`) wird in einen Rahmen gehalten und per Texterkennung gelesen.
+2. **Betriebsmittelkennzeichnung (BMK) lesen** – ein BMK-Schild (z. B. `35T1`) wird in einen Rahmen gehalten und per Texterkennung gelesen.
 3. **Informationen anzeigen** – zum BMK erscheinen Typ, Hersteller, Funktion, Status und letzte Prüfung.
 
 Hinterlegt sind zwei Schränke: **Hauptverteiler** (`mainsCabinet`, 63 BMKs) und **Steuerschrank** (`controlCabinet`, 11 BMKs).
@@ -19,11 +19,10 @@ Hinterlegt sind zwei Schränke: **Hauptverteiler** (`mainsCabinet`, 63 BMKs) und
 3. [Projekt in Unity öffnen](#3-projekt-in-unity-öffnen)
 4. [Vuforia-Lizenz eintragen (Pflicht)](#4-vuforia-lizenz-eintragen-pflicht)
 5. [Testen am PC](#5-testen-am-pc)
-6. [Testen am Android-Handy (optional)](#6-testen-am-android-handy-optional)
+6. [Testen am Android-Smartphone](#6-testen-am-android-smartphone)
 7. [Aufbau der App](#7-aufbau-der-app)
 8. [Projektstruktur](#8-projektstruktur)
 9. [Bekannte Einschränkungen](#9-bekannte-einschränkungen)
-10. [Fehlerbehebung](#10-fehlerbehebung)
 
 ---
 
@@ -34,8 +33,8 @@ Hinterlegt sind zwei Schränke: **Hauptverteiler** (`mainsCabinet`, 63 BMKs) und
 | **Unity 6000.6.0f1** (über Unity Hub) | Öffnen und Testen des Projekts |
 | **Git** und **Git LFS** | Herunterladen (Modelle, Videos und das Vuforia-Paket liegen in Git LFS) |
 | **Vuforia-Developer-Account** (kostenlos) | Lizenzschlüssel, siehe [Abschnitt 4](#4-vuforia-lizenz-eintragen-pflicht) |
-| Unity-Modul **Android Build Support** | nur für den Test am Handy |
-| Android-Handy mit ARCore-Unterstützung | nur für den Test am Handy |
+| Unity-Modul **Android Build Support** | nur für den Test am Smartphone |
+| Android-Smartphone mit ARCore-Unterstützung | nur für den Test am Smartphone |
 
 Eine Webcam ist **nicht** nötig – am PC wird mit aufgezeichneten Vuforia-Videos getestet.
 
@@ -47,9 +46,6 @@ Eine Webcam ist **nicht** nötig – am PC wird mit aufgezeichneten Vuforia-Vide
 git lfs install
 git clone https://github.com/ra0037I/industrial-computing-project.git
 ```
-
-> **Wichtig:** Nicht über „Download ZIP“ auf GitHub herunterladen. Das ZIP enthält statt der großen Dateien (Vuforia-Paket, 3D-Modelle, Videos) nur kleine Platzhalter, und das Projekt lässt sich nicht öffnen.
-> Wurde ohne Git LFS geklont, im Projektordner `git lfs pull` ausführen.
 
 ---
 
@@ -79,13 +75,11 @@ Ohne gültigen Lizenzschlüssel lädt Vuforia die Schaltschrank-Datensätze nich
 2. Im Inspector bei **App License Key** den Schlüssel einfügen.
 3. Speichern (**Strg+S**).
 
-> Ein im Repository eventuell bereits eingetragener Schlüssel stammt aus der Entwicklung und ist nicht für die Abgabe gedacht – bitte durch den eigenen ersetzen.
-
 ---
 
 ## 5. Testen am PC
 
-Im Editor wird die Handykamera durch **Vuforia-Aufnahmen** ersetzt (Videos mit Kamera- und Bewegungsdaten, aufgenommen mit dem Vuforia Session Recorder). Das ist bereits fertig eingerichtet:
+Im Editor wird die Smartphone-Kamera durch **Vuforia-Aufnahmen** ersetzt (Videos mit Kamera- und Bewegungsdaten). Diese wurden am Smartphone mit dem **Vuforia Aufnahme Assistent** der App am echten Schaltschrank aufgenommen. Das ist bereits fertig eingerichtet:
 
 - *Vuforia Configuration → Play Mode* = **Recording**
 - Jede AR-Szene spielt über die Komponente `SceneRecording` ihr eigenes Video ab:
@@ -100,7 +94,7 @@ Im Editor wird die Handykamera durch **Vuforia-Aufnahmen** ersetzt (Videos mit K
 2. **Schaltschrank Erkennung** wählen. Das Video `cabinet.mp4` startet.
 3. Sobald der **Hauptverteiler** im Bild ist, erscheint unten ein Popup
    *„Schaltschrank erkannt – Hauptverteiler, 63 Betriebsmittel hinterlegt …“*.
-4. Im weiteren Verlauf schwenkt das Video zum **Steuerschrank**. Die App wechselt automatisch das aktive Model Target (Vuforia kann nur eines gleichzeitig suchen) und zeigt bei Erkennung *„Steuerschrank, 11 Betriebsmittel hinterlegt“*. Siehe auch [Einschränkungen](#9-bekannte-einschränkungen).
+4. Im weiteren Verlauf schwenkt das Video zum **Steuerschrank**. Die App wechselt automatisch das aktive Model Target (Vuforia kann nur eines gleichzeitig suchen. Siehe auch [Einschränkungen](#9-bekannte-einschränkungen)) und zeigt bei Erkennung *„Steuerschrank, 11 Betriebsmittel hinterlegt“*.
 5. **Zur BMK-Erkennung** im Popup öffnet den Betriebsmittel-Scanner **für genau diesen Schrank**.
 
 ### 5.2 BMK-Erkennung
@@ -131,19 +125,24 @@ BMKs, die in keiner BMK-Liste stehen, werden nicht angenommen – der Rahmen ble
 ### 5.3 Navigation
 
 - Der Button **Zurück** führt jeweils zur Szene, aus der man gekommen ist (z. B. BMK-Erkennung → Schrank-Erkennung → Hauptmenü).
-- **Vuforia Aufnahme Assistent** öffnet den Vuforia Session Recorder. Er nimmt nur am Handy echte Videos auf und ist im Editor nicht sinnvoll testbar.
+- **Vuforia Aufnahme Assistent** öffnet den Vuforia Session Recorder. Mit ihm wurden am Smartphone die Aufnahmen `cabinet.mp4` und `bmkScanner.mp4` erstellt, die beim Test am PC als Recording im Hintergrund laufen (siehe Abschnitt 5). Auf die gleiche Weise lassen sich Aufnahmen für neue Schränke erstellen. Er nimmt nur am Smartphone auf und ist im Editor nicht sinnvoll testbar.
 
 ---
 
-## 6. Testen am Android-Handy (optional)
+## 6. Testen am Android-Smartphone
 
 1. **File → Build Profiles → Android → Switch Platform**.
-2. Handy per USB verbinden (USB-Debugging aktiv) und **Build And Run** wählen.
+2. Smartphone per USB verbinden (USB-Debugging aktiv) und **Build And Run** wählen.
 3. Beim ersten Start die Kamera-Berechtigung erlauben.
 
-Am Handy wird immer die echte Kamera verwendet (die Videos gelten nur im Editor). Für die Schrank-Erkennung wird der reale Schaltschrank benötigt; die Texterkennung funktioniert mit jedem BMK-Schild (auch auf einem Foto am Bildschirm).
+Am Smartphone wird immer die echte Kamera verwendet (die Videos gelten nur im Editor). Für die **Schrank-Erkennung** wird der reale Schaltschrank benötigt.
 
-Mindest-Android-Version: siehe *Player Settings → Android → Minimum API Level*.
+**BMK-Erkennung ohne echten Schrank:** Dafür können die Fotos aus dem Ordner `Pictures/` verwendet werden:
+
+1. `Pictures/mainsCabinett.jpg` (Hauptverteiler) oder `Pictures/controlCabinett.jpg` (Steuerschrank) am PC-Bildschirm öffnen.
+2. **Stark in das Foto hineinzoomen**, bis ein einzelnes gelbes BMK-Schild gut lesbar ist – in der Gesamtansicht sind die Schilder zu klein für die Texterkennung.
+3. In der App **Betriebsmittel Scanner** öffnen und das Schild mit dem Smartphone in den Rahmen halten.
+4. Nach kurzer Zeit wird der Rahmen grün und die Daten zum BMK erscheinen.
 
 ---
 
@@ -153,7 +152,7 @@ Mindest-Android-Version: siehe *Player Settings → Android → Minimum API Leve
 Hauptmenü „Wartungsassistent“
  ├─ Schaltschrank Erkennung ──(Schrank erkannt → Popup)──► Betriebsmittel Scanner (nur BMKs dieses Schranks)
  ├─ Betriebsmittel Scanner (BMKs aller Schränke)
- └─ Vuforia Aufnahme Assistent (Testvideos für neue Schränke aufnehmen)
+ └─ Vuforia Aufnahme Assistent (Vuforia-Aufnahmen für den Test am PC erstellen)
 ```
 
 | Szene | Inhalt |
@@ -161,7 +160,7 @@ Hauptmenü „Wartungsassistent“
 | `Main` | Hauptmenü, kein Kamerabild |
 | `CabinetScanner` | Model Targets beider Schränke, automatischer Wechsel, Popup |
 | `BmkScanner` | Rahmen, Texterkennung, Info-Panel |
-| `SessionRecorder` | Vuforia Session Recorder |
+| `SessionRecorder` | Vuforia Session Recorder – damit wurden die Recordings in `Assets/Videos/` aufgenommen |
 
 **Ablauf der BMK-Erkennung:** Kamerabild von Vuforia → Ausschnitt unter dem Rahmen → Google ML Kit (on-device, offline) → Text bereinigen und gegen die BMK-Listen prüfen (typische Verwechslungen wie 1/I, 0/O, 7/T werden korrigiert) → nach 2 gleichen Treffern Anzeige der Daten.
 
@@ -181,7 +180,7 @@ Hauptmenü „Wartungsassistent“
 | `Assets/Resources/mainsCabinet/`, `controlCabinet/` | texturierte 3D-Scans (OBJ) |
 | `Assets/Resources/BmkData/` | BMK-Listen und Mockdaten pro Schrank |
 | `Assets/Videos/` | Vuforia-Aufnahmen für den Test am PC |
-| `Pictures/` | Fotos der Schränke, aus denen die BMKs abgelesen wurden |
+| `Pictures/` | Fotos der Schränke, die für Punkt 6 verwendet werden können |
 
 | Skript | Aufgabe |
 |---|---|
@@ -190,7 +189,7 @@ Hauptmenü „Wartungsassistent“
 | `CabinetFoundPopup` | Popup bei erkanntem Schrank, Übergabe des Schranks an die BMK-Erkennung |
 | `BmkScanner` | Rahmen, Bildausschnitt, Texterkennung, Abgleich mit den BMK-Listen |
 | `BmkInfoPanel` | Anzeige der Daten, Statusfarben, Hinweis „nicht in diesem Schrank“ |
-| `BmkContext` | gewählter Schrank, Laden der Daten, Zuordnung BMK → Schrank |
+| `BmkContext` | gewählter Schrank, Laden der Daten, Zuordnung BMK zum Schrank |
 | `SceneRecording` | Vuforia-Video pro Szene im Editor |
 
 ### Daten pro Schrank
@@ -211,19 +210,5 @@ Die BMKs wurden von den Fotos in `Pictures/` abgelesen. Gerätetypen entsprechen
 ## 9. Bekannte Einschränkungen
 
 - **Texterkennung nur auf Android.** Im Editor wird sie über *Editor Simulated Text* simuliert (siehe 5.2).
-- **Ein Model Target zur Zeit.** Vuforia kann nur einen Model-Target-Datensatz gleichzeitig aktiv haben. Die App wechselt deshalb alle 2 Sekunden zwischen den Schränken, solange keiner erkannt wird – die Erkennung des zweiten Schranks kann dadurch kurz verzögert sein.
-- **Steuerschrank:** Der Datensatz `controlCabinet` wurde mit dem Modus „car“ erzeugt und das Scan-Modell ist ca. 5° geneigt. Die Erkennung ist daher weniger zuverlässig als beim Hauptverteiler.
-- **Mockdaten:** Die Infos zu den Betriebsmitteln sind Beispieldaten; eine Anbindung an echte Daten (z. B. EPLAN-Export, Webservice) ist vorbereitet.
-- Einige Meldungen von Vuforia selbst (z. B. im Session Recorder) sind nur auf Englisch verfügbar.
-
----
-
-## 10. Fehlerbehebung
-
-| Problem | Ursache / Lösung |
-|---|---|
-| Bild bleibt schwarz, Console: `Failed to create ModelTargetObserver … license key` oder `Dataset … not valid with the used Vuforia license` | Lizenzschlüssel fehlt oder ist ungültig → [Abschnitt 4](#4-vuforia-lizenz-eintragen-pflicht) |
-| Console: `Failed to open external camera` | Das Video ist keine Vuforia-Aufnahme oder fehlt → prüfen, ob `Assets/Videos/*.mp4` vorhanden und größer als einige KB sind (`git lfs pull`) |
-| Projekt lässt sich nicht öffnen, Vuforia-Paket fehlt | Git LFS nicht installiert → `git lfs install` und `git lfs pull` |
-| `MissingReferenceException … Material has been destroyed` (Vuforia) | Bekanntes Editor-Problem von Vuforia mit URP → Play erneut starten bzw. Unity neu starten |
-| Popup erscheint nicht | Schrank vollständig und frontal ins Bild bringen; beim Video etwas abwarten, bis das passende Model Target aktiv ist |
+- **Ein Model Target zur Zeit.** Vuforia kann nur einen Model-Target-Datensatz gleichzeitig aktiv haben. Die App wechselt deshalb alle 2 Sekunden zwischen den Schränken, solange keiner erkannt wird (Skript `ModelTargetSwitcher`). Die Erkennung des zweiten Schranks kann dadurch kurz verzögert sein.
+- **Mockdaten:** Die Infos zu den Betriebsmitteln sind Beispieldaten, eine Anbindung an echte Daten ist vorbereitet.
