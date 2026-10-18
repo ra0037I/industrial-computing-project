@@ -2,7 +2,7 @@
 
 Projektarbeit im Kurs **Industrial Computing** (MCI, Master) von:
 - **Andreas Rofner**
-- **Rene Stockinger**.
+- **Rene Stockinger**
 
 Die Android-App unterstützt Wartungspersonal am Schaltschrank:
 
